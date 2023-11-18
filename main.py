@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+import plotly.express as px
 
 # Activation functions
 def sigmoid(x, derivative=False):
@@ -21,7 +21,9 @@ def forward_propagation(X, parameters):
     for i in range(len(parameters) // 2):
         W = parameters[f'W{i + 1}']
         b = parameters[f'b{i + 1}']
-        Z = np.dot(W, A) + b
+        
+        # Ensure compatibility for matrix multiplication
+        Z = np.dot(W, A.T) + b
         A = sigmoid(Z)
 
         cache = (A, W, b, Z)
@@ -80,7 +82,7 @@ def predict(X, parameters):
     AL, _ = forward_propagation(X, parameters)
     return AL
 
-# Initialize parameters
+# Function to initialize parameters
 def initialize_parameters(layers):
     parameters = {}
     L = len(layers)
